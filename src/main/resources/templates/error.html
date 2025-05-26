@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Image Management System</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>Image Management System</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/upload}">Upload Image</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="alert alert-danger">
+            <h2>An Error Occurred</h2>
+            <p><strong>Status:</strong> <span th:text="${status}">500</span></p>
+            <p><strong>Error:</strong> <span th:text="${error}">Internal Server Error</span></p>
+            <p><strong>Message:</strong> <span th:text="${message}">Error message</span></p>
+            <p><strong>Path:</strong> <span th:text="${path}">Path</span></p>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <a th:href="@{/}" class="button" style="text-decoration: none; display: inline-block; background-color: #007bff; color: white; padding: 10px 15px; border-radius: 4px;">Return to Home</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image - Image Management System</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script>
+        function validateFileSize() {
+            const fileInput = document.getElementById('file');
+            const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+
+            if (fileInput.files.length > 0) {
+                const fileSize = fileInput.files[0].size;
+                if (fileSize > maxSize) {
+                    alert('Error: The selected file is too large. Maximum file size is 10MB.');
+                    fileInput.value = ''; // Clear the file input
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Image Management System</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/upload}">Upload Image</a></li>
+            <li>
+                <span th:text="${'Welcome, ' + #authentication.name}">Welcome, User</span>
+                <a th:href="@{/logout}">(Logout)</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div th:if="${message}" class="alert" th:classappend="${messageType == 'success'} ? 'alert-success' : 'alert-danger'">
+            <p th:text="${message}"></p>
+        </div>
+
+        <h2>Upload New Image</h2>
+
+        <div class="image-detail">
+            <form th:action="@{/images/upload}" method="post" enctype="multipart/form-data" onsubmit="return validateFileSize()">
+                <div class="form-group">
+                    <label for="file">Select Image (Max size: 10MB):</label>
+                    <input type="file" id="file" name="file" accept="image/*" required onchange="validateFileSize()">
+                    <small class="form-text">Please note that files larger than 10MB will be rejected.</small>
+                </div>
+
+                <button type="submit">Upload Image</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Management System</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>Image Management System</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li th:if="${isAuthenticated}"><a th:href="@{/upload}">Upload Image</a></li>
+            <li th:if="${!isAuthenticated}"><a th:href="@{/login}">Login</a></li>
+            <li th:if="${!isAuthenticated}"><a th:href="@{/register}">Register</a></li>
+            <li th:if="${isAuthenticated}">
+                <span th:text="${'Welcome, ' + username}">Welcome, User</span>
+                <a th:href="@{/logout}">(Logout)</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div th:if="${message}" class="alert" th:classappend="${messageType == 'success'} ? 'alert-success' : 'alert-danger'">
+            <p th:text="${message}"></p>
+        </div>
+
+        <h2>Image Gallery</h2>
+
+        <div th:if="${#lists.isEmpty(images)}" class="alert alert-info">
+            <p>No images found. Please upload some images.</p>
+        </div>
+
+        <div class="image-gallery" th:unless="${#lists.isEmpty(images)}">
+            <div class="image-card" th:each="image : ${images}">
+                <a th:href="@{'/view/' + ${image.id}}">
+                    <img th:src="@{'/images/' + ${image.id}}" alt="Image">
+                </a>
+                <div class="image-info">
+                    <h3 th:text="${image.fileName}">Image Name</h3>
+                    <p th:text="${image.fileType}">Image Type</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

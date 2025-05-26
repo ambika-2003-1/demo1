@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Image - Image Management System</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>Image Management System</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/upload}">Upload Image</a></li>
+            <li>
+                <span th:text="${'Welcome, ' + #authentication.name}">Welcome, User</span>
+                <a th:href="@{/logout}">(Logout)</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div th:if="${message}" class="alert" th:classappend="${messageType == 'success'} ? 'alert-success' : 'alert-danger'">
+            <p th:text="${message}"></p>
+        </div>
+
+        <h2>Image Details</h2>
+
+        <div class="image-detail" th:if="${image}">
+            <img th:src="@{'/images/' + ${image.id}}" alt="Image">
+
+            <div class="image-metadata">
+                <h3>Metadata</h3>
+                <p><strong>File Name:</strong> <span th:text="${image.fileName}">filename.jpg</span></p>
+                <p><strong>File Type:</strong> <span th:text="${image.fileType}">image/jpeg</span></p>
+                <p><strong>Analysis Result:</strong> <span th:text="${image.analysisResult}">Analysis result</span></p>
+                <p><strong>Uploaded By:</strong> <span th:text="${image.username}">username</span></p>
+            </div>
+
+            <div class="actions" style="margin-top: 20px;">
+                <a th:href="@{'/images/' + ${image.id}}" class="button" style="text-decoration: none; display: inline-block; background-color: #28a745; color: white; padding: 10px 15px; border-radius: 4px;">Download Image</a>
+            </div>
+        </div>
+
+        <div th:unless="${image}" class="alert alert-danger">
+            <p>Image not found.</p>
+        </div>
+    </div>
+</body>
+</html>
