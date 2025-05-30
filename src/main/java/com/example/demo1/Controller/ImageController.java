@@ -1,7 +1,6 @@
 package com.example.demo1.Controller;
 
 import com.example.demo1.Image;
-import com.example.demo1.Repository.ImageRepository;
 import com.example.demo1.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,13 +16,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
+import com.example.demo1.Service.ImageService;
 
 import jakarta.annotation.PostConstruct;
 
-@Controller
 @RequestMapping("/images")
 public class ImageController {
     @Autowired
@@ -31,6 +32,9 @@ public class ImageController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ImageService imageService;
 
     @PostConstruct
     public void init() {
@@ -73,7 +77,8 @@ public class ImageController {
             }
             image.setAnalysisResult(analysisResult);
 
-            Image savedImage = imageRepository.save(image);
+            image.setId(UUID.randomUUID().toString()); // Generate a unique ID for the image
+            imageService.saveImage(image);
 
             // Associate the image with the user
             userService.addImageToUser(currentUsername, savedImage.getId());
@@ -92,7 +97,7 @@ public class ImageController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<byte[]> getImage(@PathVariable String id) {
-        Optional<Image> imageOptional = imageRepository.findById(id);
+        Optional<Image> imageOptional = imageService.getImageById(id);
         if (imageOptional.isPresent()) {
             Image image = imageOptional.get();
             return ResponseEntity.ok()

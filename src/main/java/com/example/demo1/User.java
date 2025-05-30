@@ -17,6 +17,9 @@ public class User implements UserDetails {
     private String id;
     
     @Indexed(unique = true)
+    private String email;
+    
+    @Indexed(unique = true)
     private String username;
     
     private String password;
@@ -29,9 +32,10 @@ public class User implements UserDetails {
     }
     
 
-    public User(String username, String password, String role) {
+    public User(String username, String password, String role, String email) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.role = role;
         this.imageIds = Collections.emptyList();
     }
@@ -44,7 +48,15 @@ public class User implements UserDetails {
     public void setId(String id) {
         this.id = id;
     }
-    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
